@@ -2,8 +2,8 @@
 // collison detection
 // for higher dimension the complexity is 0(n*k*logn) interestingly for 2d we only stick to 2 sorts
 // clustering and spatial database (vector database)
-#include<iostream>
-#include<cmath>
+#include<bits/stdc++.h>
+
 using namespace std;
 using ll=long long;
 
@@ -23,11 +23,13 @@ ll dist(point a, point b){
 }
 
 ll bruteforce_basecase(vector<point>& pt, int l, int r){
+	ll mindist = LLONG_MAX;
 	for(int i=l;i<r;i++){
 		for(int j=i+1;j<r;j++){
-		 mindist = min(mindist, dist(pt[i],pt[j]))
+		 mindist = min(mindist, dist(pt[i],pt[j]));
 		}
 	}
+	return mindist;
 }
 
 ll closeststrip(vector<point> strip, ll d){
@@ -35,7 +37,7 @@ ll closeststrip(vector<point> strip, ll d){
 	int n = strip.size();
 
 	for(int i=0;i<n;i++){
-		for(){
+		for(int j=i+1;j<n && (strip[j].y - strip[i].y)<mindist;j++){
 			mindist = min(mindist, dist(strip[i],strip[j]));
 		}
 	}
@@ -51,7 +53,7 @@ ll bestpair(vector<point> px, vector<point>py){
 	int mid = n/2;
 	point midpoint = px[mid];
 
-	vector<point> pxl(px.begin(), px.being()+mid);
+	vector<point> pxl(px.begin(), px.begin()+mid);
 	vector<point> pxr(px.begin()+mid, px.end());
 
 	vector<point> pyl,pyr;
@@ -72,7 +74,7 @@ ll bestpair(vector<point> px, vector<point>py){
 		if(abs(p.x-midpoint.x)<d)
 			strip.push_back(p);
 	}
-	return min(d, closeststrip(strip,d))
+	return min(d, closeststrip(strip,d));
 }
 
 int main(){
@@ -82,7 +84,6 @@ int main(){
 	vector<point> px,py;
 // this way we have actual set and left and right total 4 vector -> wrong we only declare 2
 // in the later part of recursion we have left and right declared there
-	vector<point> strip_svm;
 
 	for(int i=0;i<n;i++){
 		cin>>x>>y;
@@ -93,10 +94,10 @@ int main(){
 		py.push_back(p);
 	}
 	sort(px.begin(), px.end(), [](point a, point b)
-		{return a.x<b.x}
+		{return a.x<b.x;}
 	);
 	sort(py.begin(),py.end(), [](point a, point b)
-		{return a.y<b.y}
+		{return a.y<b.y;}
 	);
 	cout<<bestpair(px,py);
 }
