@@ -45,7 +45,7 @@ ll closeststrip(vector<point> strip, ll d){
 }
 
 // x sort helps in refining the search space and y sort boosts in the strip!!
-ll bestpair(vector<point> px, vector<point>py){
+ll bestpair(vector<point>& px, vector<point>& py){
 	int n = px.size();
 	if(n<=3){
 		return bruteforce_basecase(px,0,n);
