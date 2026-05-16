@@ -1,0 +1,49 @@
+// brute force is O(n!) but how do we get to the hungarian algorithm O(n^3)
+#include<bits/stdc++.h>
+using namespace std;
+
+// doesnt return anything just changes inplace
+void subtractrow_subroutine(vector<vector<int>>& costmatrix){
+	for(int row=0;row<costmatrix.size();row++){
+		// important only use of min_element gives an iterator
+		int minval = *min_element(costmatrix[row].begin(), costmatrix[row].end());
+		for(int col=0;col<costmatrix.size();col++){
+			costmatrix[row][col] -= minval;
+		}
+	}
+}
+
+// cant use the min_elements thing now resort back to minval = min(minval, costmatrix[row][col])
+void subtractcol_subroutine(vector<vector<int>>& costmatrix){
+        for(int col=0;col<costmatrix.size();col++){
+                // important only use of min_element gives an iterator
+                int minval = INT_MAX;
+		for(int row=0;row<costmatrix.size();row++){
+                	minval = min(minval,costmatrix[row][col])
+                }
+		for(int row=0;row<costmatrix.size();row++){
+			costmatrix[row][col] -= minval;
+		}
+        }
+}
+
+int main(){
+	// initialize
+	int employees;
+	vector<vector<int>> costmatrix;
+	vector<int> intermediate;
+	// take input and store
+	cin>>employees;
+	for(int i=0;i<employees;i++){
+		for(int i=0;i<employees;i++){
+			cin>>x;
+			intermediate.push_back(x);
+		}
+		costmatrix.push_back(intermediate);
+	}
+
+	// process and main algorithm
+	subtractrow_subroutine(costmatrix);
+	subtractcol_subroutine(costmatrix);
+
+}
