@@ -1,6 +1,7 @@
 // idea is very very important in nearest neighbour search
 // collison detection
 // for higher dimension the complexity is 0(n*k*logn) interestingly for 2d we only stick to 2 sorts
+// pow avoid instead for squares just multiply twice simpler and faster
 // clustering and spatial database (vector database)
 #include<bits/stdc++.h>
 
@@ -8,7 +9,7 @@ using namespace std;
 using ll=long long;
 
 struct point{
-	ll x,y;
+	ll x,y,idx;
 };
 
 /*
@@ -37,7 +38,7 @@ ll closeststrip(vector<point>& strip, ll d){
 	int n = strip.size();
 
 	for(int i=0;i<n;i++){
-		for(int j=i+1;j<n && (strip[j].y - strip[i].y)<mindist;j++){
+		for(int j=i+1;j<n && (strip[j].y-strip[i].y)*(strip[j].y - strip[i].y)<mindist;j++){
 			mindist = min(mindist, dist(strip[i],strip[j]));
 		}
 	}
@@ -53,16 +54,29 @@ ll bestpair(vector<point>& px, vector<point>& py){
 	int mid = n/2;
 	point midpoint = px[mid];
 
+	//unordered_set<ll> leftset;
 	vector<point> pxl(px.begin(), px.begin()+mid);
 	vector<point> pxr(px.begin()+mid, px.end());
 
 	vector<point> pyl,pyr;
-	for(auto& p:py){
-		if(p.x<midpoint.x)
-			pyl.push_back(p);
-		else
-			pyr.push_back(p);
-	}
+
+	unordered_set<ll> leftSet;
+	for(int i = 0; i < mid; i++)
+    		leftSet.insert(px[i].idx);
+
+	for(auto& p : py){
+    		if(leftSet.count(p.idx))
+        		pyl.push_back(p);
+    		else
+        		pyr.push_back(p);
+		}
+
+//	for(auto& p:py){
+//		if(p.idx<mid)
+//			pyl.push_back(p);
+//		else
+//			pyr.push_back(p);
+//	}
 
 	ll dl = bestpair(pxl,pyl);
 	ll dr = bestpair(pxr,pyr);
@@ -71,7 +85,7 @@ ll bestpair(vector<point>& px, vector<point>& py){
 
 	vector<point> strip;
 	for(auto& p:py){
-		if(pow(p.x-midpoint.x,2)<d)
+		if((p.x-midpoint.x)*(p.x-midpoint.x)<d)
 			strip.push_back(p);
 	}
 	return min(d, closeststrip(strip,d));
@@ -90,6 +104,7 @@ int main(){
 		point p;
 		p.x = x;
 		p.y = y;
+		p.idx = i;
 		px.push_back(p);
 		py.push_back(p);
 	}

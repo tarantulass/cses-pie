@@ -7,6 +7,8 @@ int main(){
 	// initialize
 	string s; // input from the grader
 	ll mid, low, high;
+	bool verdict;
+
 	// take input and store/process
 	// why low high otherwuse there is no way we are going to get the termination condition!!
 	low = 0;
@@ -20,8 +22,11 @@ int main(){
 			low = mid+1;
 		}
 		else{
-			high = mid-1;
+			high = mid;
+// important the output is only y<x means it may happen y==x in that case we should not throw mid
+// in binary search we did mid-1 as we had another check in there but now we only get yes or no
 		}
 	}
-	cout<<"!"<<" "<<mid;
+	cout<<"!"<<" "<<low;
+// as here the code is saying that low== high otherwise it wont reach here!!
 }
