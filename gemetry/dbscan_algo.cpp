@@ -5,6 +5,7 @@ using namespace std;
 
 struct point{
 	ll x,y;
+	// can add constructor allowing pairs  to be added directly!! but let that be
 };
 
 // writing for a custom class hashing -> hash is predefined here we just solve after that
@@ -26,8 +27,10 @@ ll flooring(ll x,ll r){return (ll)floor((double)x / r);}
 
 // important to pass by reference!!
 void query(pair<ll,ll> ref, pair<ll,ll> neighbour, ll r, vector<point>& finalanswer){
-	if(pow(neighbour.x-ref.x,2) + pow(neighbour.y-ref.y,2) < pow(r,2)){
-		finalanswer.push_back(neighbour);
+	if(pow(neighbour.first-ref.first,2) + pow(neighbour.second-ref.second,2) < pow(r,2)){
+		finalanswer.push_back({neighbour.first, neighbour.second});
+		// here we dont append neghbour as it is a pair and we want point instead
+		// {} just makes compiler to chekc for appropritate datatype
 	}
 }
 
@@ -63,4 +66,5 @@ int main(){
 	for(auto& p: finalanswer){
 		cout<<p.x<<" "<<p.y<<"\n";
 	}
+	return 0;
 }
