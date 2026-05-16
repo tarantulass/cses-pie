@@ -10,19 +10,22 @@ using ll = long long;
 
 struct point{
 	ll x,y;
+	point operator-(const point& other) const{
+		return {x-other.x, y-other.y};
+	}
 };
 
-ll crossproduct(vector<point> a, vector<point> b){
+ll crossproduct(point a, point b){
 	return a.x*b.y - a*y*b.x
 }
 
 int main(){
 	// initialize
-	ll testcase;
+	ll testcase, x,y;
 	vector<point> coords;
 	vector<point> convexhull_low;// finally we print this after all those common terms are done
 	vector<point> convexhull_up;
-
+	point A,B,C;
 	// take input and store
 	cin>>testcase;
 	for(auto i=0;i<testcase;i++){
@@ -33,6 +36,15 @@ int main(){
 	// obviously convex hull obeys triangle inequality!!
 	// solve this by taking 3 points in condiration A,B,C s.t cross product of (B-A) and (C-A) decides the point in convex hull
 	// algorithms starts
-	
-
+	sort(coords.begin(), coords.end(), [](point a, point b)
+		{return a.x<b.x;}
+	);
+	for(ll i=0;i<testcase-2;i++){
+		A = coords[i];
+		B = coords[i+1];
+		C = coords[i+2];
+		if(crossproduct(B-A, C-A)>0){
+			convexhull_low.push_back(A);
+		}
+	}
 }
