@@ -16,7 +16,7 @@ struct point{
 };
 
 ll crossproduct(point a, point b){
-	return a.x*b.y - a*y*b.x
+	return a.x*b.y - a.y*b.x;
 }
 
 int main(){
@@ -39,12 +39,27 @@ int main(){
 	sort(coords.begin(), coords.end(), [](point a, point b)
 		{return a.x<b.x;}
 	);
-	for(ll i=0;i<testcase-2;i++){
-		A = coords[i];
-		B = coords[i+1];
-		C = coords[i+2];
-		if(crossproduct(B-A, C-A)>0){
-			convexhull_low.push_back(A);
+	for(auto& p: coords){
+		while(convexhull_low.size()>=2 && crossproduct(convexhull_low.back()-convexhull_low[convexhull_low.size()-2], p-convexhull_low[convexhull_low.size()-2]) <=0 ){
+			convexhull_low.pop_back();
 		}
+		convexhull_low.push_back(p);
 	}
+
+	for(int i=testcase-1; i>=0; i--){
+    		auto& p = coords[i];
+    		while(convexhull_up.size()>=2 &&
+          crossproduct(convexhull_up.back()-convexhull_up[convexhull_up.size()-2],
+                       	p-convexhull_up[convexhull_up.size()-2]) <= 0)
+        		convexhull_up.pop_back();
+    		convexhull_up.push_back(p);
+	}
+	// now just merge em
+
+	for(int i=1; i<convexhull_up.size()-1; i++)
+    		convexhull_low.push_back(convexhull_up[i]);
+
+	for(auto& p: convexhull_low)
+    		cout << p.x << " " << p.y << "\n";
+
 }
