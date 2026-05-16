@@ -32,7 +32,7 @@ ll bruteforce_basecase(vector<point>& pt, int l, int r){
 	return mindist;
 }
 
-ll closeststrip(vector<point> strip, ll d){
+ll closeststrip(vector<point>& strip, ll d){
 	ll mindist = d;
 	int n = strip.size();
 
@@ -71,7 +71,7 @@ ll bestpair(vector<point>& px, vector<point>& py){
 
 	vector<point> strip;
 	for(auto& p:py){
-		if(abs(p.x-midpoint.x)<d)
+		if(pow(p.x-midpoint.x,2)<d)
 			strip.push_back(p);
 	}
 	return min(d, closeststrip(strip,d));
